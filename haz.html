@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CASIO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .calculator {
+            background-color: #212529;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            max-width: 300px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .display {
+            font-size: 2em;
+            text-align: right;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: calc(100% - 20px);
+            box-sizing: border-box;
+            background-color: #343a40;
+            color: #fff;
+            box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.3);
+            margin-left: 10px;
+        }
+
+        .solar-display {
+            font-size: 1.5em;
+            text-align: right;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: calc(100% - 20px);
+            box-sizing: border-box;
+            background-color: #007bff; 
+            color: #fff; 
+            box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.3);
+            margin-left: 10px;
+        }
+        
+        .btn {
+            background-color: #495057;
+            border: none;
+            padding: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            width: 25%;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+            color: #fff;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            font-weight: bold;
+        }
+        
+        .btn:hover {
+            background-color: #6c757d;
+        }
+        
+        .btn.clear {
+            background-color: #dc3545;
+        }
+        
+        .btn.clear:hover {
+            background-color: #c82333;
+        }
+        
+        .btn.equals {
+            background-color: #28a745;
+        }
+        
+        .btn.equals:hover {
+            background-color: #218838;
+        }
+        
+        .row {
+            display: flex;
+        }
+        
+        .row .btn {
+            margin: 5px;
+        }
+
+        
+        .calculator:before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            width: calc(100% + 10px);
+            height: calc(100% + 10px);
+            background: linear-gradient(45deg, rgba(0, 0, 0, 0.3), transparent);
+            z-index: -1;
+            transform: rotateY(10deg) rotateX(10deg);
+            transition: all 0.5s ease;
+        }
+
+        .calculator:hover:before {
+            transform: rotateY(0deg) rotateX(0deg);
+        }
+    </style>
+</head>
+<body>
+<!-- License:
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+    <div class="calculator">
+        <h1 style="color: #fff; text-align: center; font-size: 1.5em; margin-bottom: 20px;">CASIO</h1>
+        <input type="text" class="display" id="display" readonly>
+        <input type="text" class="solar-display" id="solar-display" readonly>
+        <div class="row">
+            <button class="btn" onclick="appendToDisplay('7')">7</button>
+            <button class="btn" onclick="appendToDisplay('8')">8</button>
+            <button class="btn" onclick="appendToDisplay('9')">9</button>
+            <button class="btn" onclick="appendToDisplay('/')">/</button>
+        </div>
+        <div class="row">
+            <button class="btn" onclick="appendToDisplay('4')">4</button>
+            <button class="btn" onclick="appendToDisplay('5')">5</button>
+            <button class="btn" onclick="appendToDisplay('6')">6</button>
+            <button class="btn" onclick="appendToDisplay('*')">*</button>
+        </div>
+        <div class="row">
+            <button class="btn" onclick="appendToDisplay('1')">1</button>
+            <button class="btn" onclick="appendToDisplay('2')">2</button>
+            <button class="btn" onclick="appendToDisplay('3')">3</button>
+            <button class="btn" onclick="appendToDisplay('-')">-</button>
+        </div>
+        <div class="row">
+            <button class="btn" onclick="appendToDisplay('0')">0</button>
+            <button class="btn" onclick="appendToDisplay('.')">.</button>
+            <button class="btn equals" onclick="calculate()">=</button>
+            <button class="btn" onclick="appendToDisplay('+')">+</button>
+        </div>
+        <div class="row">
+            <button class="btn clear" onclick="clearDisplay()">C</button>
+        </div>
+    </div>
+
+    <script>
+        function appendToDisplay(value) {
+            document.getElementById('display').value += value;
+        }
+
+        function clearDisplay() {
+            document.getElementById('display').value = '';
+        }
+
+        function calculate() {
+            try {
+                const expression = document.getElementById('display').value;
+                const result = eval(expression);
+                document.getElementById('display').value = result;
+                document.getElementById('solar-display').value = `Solar expression: ${expression}`;
+            } catch (error) {
+                document.getElementById('display').value = 'Error';
+                document.getElementById('solar-display').value = '';
+            }
+        }
+        
+        
+        document.addEventListener('keydown', function(event) {
+            const key = event.key;
+            if (/[0-9\/\*\-\+\.\=]/.test(key)) {
+                event.preventDefault();
+                appendToDisplay(key);
+            } else if (key === 'Enter') {
+                event.preventDefault();
+                calculate();
+            } else if (key === 'Escape') {
+                event.preventDefault();
+                clearDisplay();
+            }
+        });
+    </script>
+</body>
+</html>
